@@ -67,11 +67,11 @@ type GetCombinedValue<T> = {
 
 export function using(node: DOMElement, cb: () => any): void
 
-export function spec(spec: {
+export function spec<T extends DOMProperty>(spec: {
   attr?: PropertyMap
   data?: PropertyMap
   transform?: Partial<TransformMap>
-  text?: DOMProperty | AttributeStore
+  text?: T | Store<T>
   visible?: Store<boolean>
   style?: StylePropertyMap
   styleVar?: PropertyMap
@@ -100,13 +100,13 @@ export function handler(
   >,
 ): void
 
-export function h(
+export function h<T extends DOMProperty>(
   tag: DOMTag,
   spec: {
     attr?: PropertyMap
     data?: PropertyMap
     transform?: Partial<TransformMap>
-    text?: DOMProperty | AttributeStore
+    text?: T | Store<T>
     visible?: Store<boolean>
     style?: StylePropertyMap
     styleVar?: PropertyMap
@@ -183,7 +183,7 @@ export function remap<T extends {[field: string]: any}, S extends keyof T>(
 ): Store<T[S]>
 export function remap<
   T extends {[field: string]: any},
-  S extends {[field: number]: keyof T} | {[field: string]: keyof T}
+  S extends [keyof T] | {[field: number]: keyof T} | {[field: string]: keyof T}
 >(
   store: Store<T>,
   shape: S,
